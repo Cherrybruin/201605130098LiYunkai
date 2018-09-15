@@ -84,3 +84,4 @@ gen### CVS template
 ## resources files
 .20news
 .20news/*
+.20news\*
