@@ -73,6 +73,7 @@ gen### CVS template
 .cvsignore
 */.cvsignore
 ### VisualStudioCode template
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
