@@ -85,3 +85,5 @@ gen### CVS template
 .20news
 .20news/*
 .20news\*
+.vscode/settings.json
+.20news/
