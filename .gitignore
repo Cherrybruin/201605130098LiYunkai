@@ -88,3 +88,4 @@ gen### CVS template
 .vscode/settings.json
 .20news/
 .vscode/settings.json
+20news/*
