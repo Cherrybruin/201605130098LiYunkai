@@ -80,3 +80,7 @@ gen### CVS template
 !.vscode/launch.json
 !.vscode/extensions.json
 
+
+## resources files
+.20news
+.20news/*
