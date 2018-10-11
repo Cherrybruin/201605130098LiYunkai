@@ -3,7 +3,7 @@ from os import path, listdir
 from spacy.lang.en import English
 import threading
 from time import sleep
-nlp = spacy.load('en')
+nlp = spacy.load('en', disable=['parser','tagger','ner'])
 # tokenizer = English().Defaults.create_tokenizer(nlp)
 
 resource_path = r'../20news'
@@ -57,32 +57,40 @@ def _fit(string, dir_path, ):
 
 
 for dir_path in listdir(resource_path):
-    # print(dir_path)
+    print(dir_path)
     TF.update({
                 dir_path:{}
             })
-    all_string = ''
+    all_string = []
     for file_path in listdir(path.join(resource_path,dir_path)):
         file_path = path.join(resource_path,dir_path,file_path)
-        print('\t\t',file_path)
+        # print('\t\t',file_path)
         
         # MyTokenization(file_path).start()
         with open(file_path,'rb') as fp:
-            for line in fp:
-                line = str(line,'utf-8','ignore')
-                if len(all_string + line) > 1000000:
-                    for doc in nlp.pipe(all_string):
-                        if doc != ' ':
-                            print(doc, end='')
-                        elif doc == ' ':
-                            print(doc)
-                    all_string = ''
-                all_string += line
-    for doc in nlp.pipe(all_string,n_threads=10):
-        if doc:
-            print(doc, end='')
-        elif doc == ' ':
-            print('')
-    all_string = ''
+            all_string.extend([str(i,'utf-8','ignore') for i in fp.readlines()])
+            # for doc in nlp.pipe():
+            #     for i in doc:
+            #         _add(i.lemma_,dir_path)
+            # for line in fp:
+            #     line = str(line,'utf-8','ignore')
+            #     if len(all_string + line) > 1000000:
+            #         for doc in nlp.pipe(all_string):
+            #             if doc != ' ':
+            #                 print(doc, end='')
+            #             elif doc == ' ':
+            #                 print(doc)
+            #         all_string = ''
+            #     all_string += line
+    # for doc in nlp.pipe(all_string,n_threads=10):
+    #     if doc:
+    #         print(doc, end='')
+    #     elif doc == ' ':
+    #         print('')
+        if len(all_string) > 10000:
+            for doc in nlp.pipe(all_string):
+                for i in doc:
+                    _add(i.lemma_,dir_path)
+            all_string = []
 sleep(10)
 print(IDF)
