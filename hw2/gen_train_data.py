@@ -16,12 +16,14 @@ resource_path = '20news'
 for dir_path in listdir(resource_path):
     for file_path in listdir(path.join(resource_path,dir_path)):
         # 随机生成训练数据，rest为测试数据
-        # if randint(0,1) == 0:
-        #     gen_correct_test_data[path.join(resource_path,dir_path,file_path)] = dir_path
-        # else:
-        #     gen_train_data[path.join(resource_path,dir_path,file_path)] = dir_path
-        gen_correct_test_data[path.join(resource_path,dir_path,file_path)] = dir_path
-        gen_train_data[path.join(resource_path,dir_path,file_path)] = dir_path
+        if randint(0,1) == 0:
+            gen_correct_test_data[path.join(resource_path,dir_path,file_path)] = dir_path
+        else:
+            gen_train_data[path.join(resource_path,dir_path,file_path)] = dir_path
+        
+        # 全部作为训练数据 & 测试数据
+        # gen_correct_test_data[path.join(resource_path,dir_path,file_path)] = dir_path
+        # gen_train_data[path.join(resource_path,dir_path,file_path)] = dir_path
 
 
 print(len(gen_train_data))

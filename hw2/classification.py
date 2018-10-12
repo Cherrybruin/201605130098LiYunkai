@@ -31,6 +31,7 @@ class Classification():
             self._raw_tf[a] = {}
             self.num_of_term[a] = 0
             self.sum_of_term[a] = 0
+            self.p_perclass[a] = len(b)/len(input_dict)
             all_string_list = []
             for afile in b:
                 solved += 1
@@ -126,7 +127,20 @@ class Classification():
                 # 先选类
                 temp_p = 0
                 
-                for word in tf.keys():
+                for word,occur in tf.items():
+                    # 这是去重版本
+                    # try:
+                    #     if self.wordlist[word] == True:
+                    #         # if word in b.keys():
+                    #         #     temp_p += log((b[word]+1)/(self.num_of_term[a]+self.sum_of_term[a]))
+                    #         # else:
+                    #         #     temp_p += log(1/(self.num_of_term[a]+self.sum_of_term[a]))
+                    #         try:
+                    #             temp_p += log((b[word]+1)/(self.num_of_term[a]+self.sum_of_term[a]))
+                    #         except Exception:
+                    #             temp_p += log(1/(self.num_of_term[a]+self.sum_of_term[a]))
+                    # except Exception:
+                    #     pass
                     try:
                         if self.wordlist[word] == True:
                             # if word in b.keys():
@@ -134,11 +148,12 @@ class Classification():
                             # else:
                             #     temp_p += log(1/(self.num_of_term[a]+self.sum_of_term[a]))
                             try:
-                                temp_p += log((b[word]+1)/(self.num_of_term[a]+self.sum_of_term[a]))
+                                temp_p += occur*log((b[word]+1)/(self.num_of_term[a]+self.sum_of_term[a]))
                             except Exception:
-                                temp_p += log(1/(self.num_of_term[a]+self.sum_of_term[a]))
+                                temp_p += occur*log(1/(self.num_of_term[a]+self.sum_of_term[a]))
                     except Exception:
                         pass
+                temp_p += log(self.p_perclass[a])
                 if result[afile]:
                     if temp_p > result[afile][1]:
                         result[afile] = (a,temp_p)
