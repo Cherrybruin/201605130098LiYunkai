@@ -1,3 +1,6 @@
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+
 # 朴素贝叶斯分类器
 
 本次实验是创建一个朴素贝叶斯分类器，并测试其在数据集上的效果,数据集来自 http://qwone.com/~jason/20Newsgroups/ 上的20个分类的文章
@@ -46,6 +49,8 @@ $$
 P(x_1,x_2,x_3,\cdots,x_k | v_j)*P(v_j) = P(v_j)*\displaystyle \prod^{x_1,x_2,x_3,\cdots,x_k}_{x_i}P(x_i|v_j)
 $$
 由于连乘会增加复杂度并且降低精度。对等式取 $log$
+
+
 $$
     log\Big(P(v_j)*\displaystyle \prod^{x_1,x_2,x_3,\cdots,x_k}_{x_i}P(x_i|v_j)\Big)=log\big(P(v_j)\big)+\displaystyle\sum^{x_1,x_2,x_3,\cdots,x_k}_{x_i}log(x_i|v_j)
 $$
