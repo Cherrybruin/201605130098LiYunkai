@@ -90,3 +90,9 @@ gen### CVS template
 .vscode/settings.json
 20news/*
 hw3/tweets.txt
+hw3/tweetss.txt
+
+
+
+## ignore pyc
+*.pyc
