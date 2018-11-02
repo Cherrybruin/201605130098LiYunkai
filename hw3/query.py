@@ -21,6 +21,7 @@ def query(search_string:str):
 
     # 找到这一层的操作
     if kuohao:
+        # 有括号的操作
         if 'OR' in search_string[:kuohao[0][0]]:
             this_step = 'OR'
         elif 'AND' in search_string[:kuohao[0][0]]:
@@ -47,28 +48,29 @@ def query(search_string:str):
             result = PostingListTerm()
             i, j = 0, 0
             for a,b in kuohao:
-                result.union(query(search_string[a+1:b]))
+                result = result.union(query(search_string[a+1:b]))
             for a,b in kuohao.reverse():
                 search_string = search_string[:a]+search_string[b+1:]
             result_list = search_string.split(this_step)
             for i in result_list:
                 i = i.strip()
-                result.union(query(i))
+                result = result.union(query(i))
             return result
         if this_step == 'AND':
             result = PostingListTerm()
             i, j = 0, 0
             for a,b in kuohao:
-                result.retain(query(search_string[a+1:b]))
+                result = result.retain(query(search_string[a+1:b]))
             for a,b in kuohao.reverse():
                 search_string = search_string[:a]+search_string[b+1:]
             result_list = search_string.split(this_step)
             for i in result_list:
                 i = i.strip()
                 if i:
-                    result.retain(query(i))
+                    result = result.retain(query(i))
             return result
     else:
+        # 无括号的操作，简单布尔查询没有括号一般只有一类操作
         if 'OR' in search_string:
             this_step = 'OR'
         elif 'AND' in search_string:

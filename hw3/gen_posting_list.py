@@ -2,6 +2,8 @@ import re
 import json
 
 class PostingListTerm():
+    # 这是一条 termId->docId
+    # 包含了新增(append)，取并(union)，取交(retain)
     def __init__(self, *kwags):
         self.doclist = []
         for i in kwags:
@@ -51,6 +53,8 @@ class PostingListTerm():
             yield i
     
 class PostingList():
+    # 这是整个的termId->docId的映射表
+    # 包含了新增（update），按termId索引
     def __init__(self,*kwags):
         self._postinglist = {}
     def update(self, key, value):
@@ -76,6 +80,9 @@ tweets = {}
 word_re = re.compile(r'\w+')
 num_re = re.compile(r'\d+')
 
+# 每次引入的时候只要从文件读取即可
+# posting_list.txt 是termID->docId
+# tweets 是 docId -> tweet 
 with open('postinglist.txt','r',encoding ='utf-8') as fp:
     for i in fp:
         # print(i,'\n')
@@ -94,6 +101,8 @@ with open("tweets.txt",'r') as fp:
     except Exception:
         print("load tweets.txt failed")
 if __name__ == "__main__":
+    # 这个是生成posting_list.txt 
+    # 一般如果正确这个文件之北执行一次
     with open("tweets.txt",'r') as fp:
         try:
             for i in fp:
