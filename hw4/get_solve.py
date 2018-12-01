@@ -84,15 +84,20 @@ for query_Id,query_text in querys.items():
         # print(a)
         def VSM_F(c_w_q,c_w_d,tweet_l,df_w,b=0.5,avdl=20,M=len(tweets)):
             return c_w_q*(log(1+log(1+c_w_d))/(1-b+b*(tweet_l/avdl)))*(log((M+1)/df_w))
+        def BM25(c_w_q,c_w_d,tweet_l,df_w,k=8,b=0.5,avdl=20,M=len(tweets)):
+            return c_w_q*((k+1)*c_w_d/(c_w_d+k*(1-b+b*(tweet_l/avdl))))*(log((M+1)/df_w))
+        
         if query_word in posting_list.keys():
             _temp_word_posting_list = posting_list[query_word]
             for tweetId,tweet_word_count in _temp_word_posting_list:
-                envalue[tweetId] += VSM_F(query_word_count,tweet_word_count,len(tweets[tweetId]),df[query_word])
+                # envalue[tweetId] += VSM_F(query_word_count,tweet_word_count,len(tweets[tweetId]),df[query_word])
+                envalue[tweetId] += BM25(query_word_count,tweet_word_count,len(tweets[tweetId]),df[query_word])
         else:
             for tweet_word,doc_id_list in posting_list.items():
                 if query_word in tweet_word:
                     for tweetId,tweet_word_count in doc_id_list:
-                        envalue[tweetId] += VSM_F(query_word_count,tweet_word_count,len(tweets[tweetId]),df[query_word])
+                        # envalue[tweetId] += VSM_F(query_word_count,tweet_word_count,len(tweets[tweetId]),df[query_word])
+                        envalue[tweetId] += BM25(query_word_count,tweet_word_count,len(tweets[tweetId]),df[query_word])
     sorted_envalue = []
     for i,j in envalue.items():
         sorted_envalue.append((i,j))
