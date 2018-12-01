@@ -1,4 +1,5 @@
-import spacy
+# coding=utf-8
+# import spacy
 import re, json
 from math import log
 # nlp = spacy.load('en',disable=["tagger", "parser", "ner"])
@@ -8,6 +9,13 @@ tweets = {}
 posting_list = {}
 
 def re_get_word_count(text:str):
+    '''
+        params:
+            text: str
+            文本
+        return type:
+            yield tuple(word,word_count)
+    '''
     _temp_dict = {}
     for i in re_word.findall(text):
         try:
@@ -21,15 +29,16 @@ def re_get_word_count(text:str):
     for a,b in _temp_dict.items():
         yield (a,b)
 
+avdl = 0
 with open("../hw3/tweets.txt",'r',encoding='utf-8') as fp:
     for i in fp:
-        
         tweet = json.loads(i)
         tweetId = int(tweet['tweetId'])
         text = tweet['text'].lower()
         tweets.update({
             int(tweetId):text
         })
+        avdl += len(text)
         # print(text)
         # af = nlp(text.lower())
         for i in re_get_word_count(text):
@@ -61,9 +70,9 @@ with open("../hw3/tweets.txt",'r',encoding='utf-8') as fp:
     # print(len(posting_list.keys()))
     '''
 
-
+print(avdl / len(tweets))
 df = {}
-
+# compute df
 for a,b in posting_list.items():
     s = 0
     for j in b:
@@ -88,11 +97,13 @@ for query_Id,query_text in querys.items():
             return c_w_q*((k+1)*c_w_d/(c_w_d+k*(1-b+b*(tweet_l/avdl))))*(log((M+1)/df_w))
         
         if query_word in posting_list.keys():
+            # if found: only deal with word which is found
             _temp_word_posting_list = posting_list[query_word]
             for tweetId,tweet_word_count in _temp_word_posting_list:
                 # envalue[tweetId] += VSM_F(query_word_count,tweet_word_count,len(tweets[tweetId]),df[query_word])
                 envalue[tweetId] += BM25(query_word_count,tweet_word_count,len(tweets[tweetId]),df[query_word])
         else:
+            # if not found: deal with all word which contain query_word
             for tweet_word,doc_id_list in posting_list.items():
                 if query_word in tweet_word:
                     for tweetId,tweet_word_count in doc_id_list:
@@ -102,6 +113,6 @@ for query_Id,query_text in querys.items():
     for i,j in envalue.items():
         sorted_envalue.append((i,j))
     sorted_envalue.sort(key=lambda x:x[1],reverse=True)
-    with open('result.txt','a+',encoding='utf-8') as fp3:
+    with open('BM25_result.txt','a+',encoding='utf-8') as fp3:
         for i in sorted_envalue:
             fp3.write(f'{query_Id} {i[0]}\n')
