@@ -1,6 +1,6 @@
 import re
 import json
-
+import sys
 class PostingListTerm():
     # 这是一条 termId->docId
     # 包含了新增(append)，取并(union)，取交(retain)
@@ -77,13 +77,27 @@ class PostingList():
 
 postinglist = PostingList()
 tweets = {}
+'''
+    tweets {
+        tweetId(int) :{
+            username:
+            clusterNo:
+            text:
+            timeStr:
+            tweetId:
+            errorCode: 200(string)
+            textCleaned:
+            relevance:
+        }
+    }
+'''
 word_re = re.compile(r'\w+')
 num_re = re.compile(r'\d+')
 
 # 每次引入的时候只要从文件读取即可
 # posting_list.txt 是termID->docId
 # tweets 是 docId -> tweet 
-with open('postinglist.txt','r',encoding ='utf-8') as fp:
+with open('../hw3/postinglist.txt','r',encoding ='utf-8') as fp:
     for i in fp:
         # print(i,'\n')
         i = i.split(':')
@@ -91,7 +105,7 @@ with open('postinglist.txt','r',encoding ='utf-8') as fp:
         term = term.strip()
         for i in num_re.findall(b):
             postinglist.update(term,int(str(i)))
-with open("tweets.txt",'r') as fp:
+with open("../hw3/tweets.txt",'r') as fp:
     try:
         for i in fp:
             tweet = json.loads(i)
