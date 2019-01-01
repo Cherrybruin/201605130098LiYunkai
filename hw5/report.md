@@ -2,6 +2,7 @@
 
 分词分为1norm ， 2norm， 1norm+2nrom（Gaussian聚类报了memoryerror的错误所以没有数据）
 
+使用v-measure评估聚类结果
 
 1 norm + 2 norm 
 
