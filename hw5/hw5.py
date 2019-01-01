@@ -1,13 +1,10 @@
 
-from sklearn import mixture
+from sklearn.mixture import GaussianMixture
 import json
-import sklearn.mixture
 
 from sklearn import cluster, datasets
-import sklearn.cluster
 from sklearn.metrics.cluster import normalized_mutual_info_score
 from sklearn.metrics import v_measure_score
-import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 def read_json(file_path: str):
@@ -58,7 +55,7 @@ def dbscan(tfidf, clusters):
     print("the DBSCAN cluster algorithm result is: ",result)
 
 def gaussian_maxtures(tfidf, clusters):
-    gaussian = sklearn.mixture.GaussianMixture(n_components=4).fit(tfidf)
+    gaussian = GaussianMixture(n_components=4).fit(tfidf)
     t = gaussian.predict(tfidf)
     result=v_measure_score(t, clusters )
     print("the Gaussian mixtures cluster algorithm result is: ",result)
