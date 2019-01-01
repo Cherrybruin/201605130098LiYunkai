@@ -96,3 +96,6 @@ hw3/tweetss.txt
 
 ## ignore pyc
 *.pyc
+
+venv/*
+.vscode/*
